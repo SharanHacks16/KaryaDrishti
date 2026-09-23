@@ -1,0 +1,47 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #0B132B;
+  color: #E0E1DD;
+  font-family: 'Inter', sans-serif;
+  overflow-x: hidden;
+}
+
+/* Custom Scrollbar for Command Center */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0B132B;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #1C2541;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #3A506B;
+}
+
+/* Glassmorphism Panel Utilities */
+.glass-panel {
+  background: rgba(28, 37, 65, 0.75);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(224, 225, 221, 0.1);
+}
+
+.glass-panel-hover:hover {
+  border-color: rgba(0, 168, 150, 0.4);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+}
