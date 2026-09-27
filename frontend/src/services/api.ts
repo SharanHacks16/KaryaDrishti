@@ -1,6 +1,6 @@
 import { PortfolioOverview, ProjectDetail, Alert, Benchmark } from '../types';
 
-const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:8000/api/v1';
+const API_BASE = (import.meta as any).env?.VITE_API_URL || 'http://localhost:8000/api/v1';
 
 // Fallback Mock Data for instant offline resilience
 const MOCK_PORTFOLIO: PortfolioOverview = {
