@@ -16,8 +16,8 @@ app = FastAPI(
 # CORS Middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=settings.CORS_ORIGINS,
-    allow_credentials=True,
+    allow_origins=["*"],
+    allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
 )
@@ -29,6 +29,27 @@ app.include_router(portfolio.router, prefix=f"{settings.API_V1_STR}/portfolio", 
 app.include_router(projects.router, prefix=f"{settings.API_V1_STR}/projects", tags=["Projects"])
 app.include_router(risk.router, prefix=f"{settings.API_V1_STR}/risk", tags=["Risk Center"])
 app.include_router(alerts.router, prefix=f"{settings.API_V1_STR}/alerts", tags=["Early Warning Alerts"])
+
+@app.on_event("startup")
+def startup_db_seed():
+    from app.database.session import SessionLocal
+    from app.models.domain import Project
+    db = SessionLocal()
+    try:
+        if db.query(Project).count() == 0:
+            import os, sys
+            root_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '../..'))
+            if root_dir not in sys.path:
+                sys.path.insert(0, root_dir)
+            from scripts.seed_database import seed_real_data
+            from scripts.run_predictions import run_ml_inference_and_update_db
+            print("Auto-seeding database on cloud startup...")
+            seed_real_data()
+            run_ml_inference_and_update_db()
+    except Exception as e:
+        print("Startup seed notice:", e)
+    finally:
+        db.close()
 
 @app.get("/")
 def root():
