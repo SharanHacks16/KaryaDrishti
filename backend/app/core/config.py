@@ -2,7 +2,19 @@ import os
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from typing import List, Optional
 
-default_db_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../../karyadrishti.db')).replace('\\', '/')
+def get_default_db_url() -> str:
+    root_db = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../../karyadrishti.db'))
+    backend_db = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../karyadrishti.db'))
+    cwd_db = os.path.abspath('karyadrishti.db')
+    
+    for candidate in [backend_db, root_db, cwd_db]:
+        if os.path.exists(candidate) and os.path.getsize(candidate) > 100000:
+            return f"sqlite:///{candidate.replace('\\', '/')}"
+    
+    # Default fallback
+    return f"sqlite:///{backend_db.replace('\\', '/')}"
+
+default_db_url = get_default_db_url()
 
 class Settings(BaseSettings):
     PROJECT_NAME: str = "KARYADRISHTI"
@@ -13,7 +25,7 @@ class Settings(BaseSettings):
     ENVIRONMENT: str = os.getenv("ENVIRONMENT", "development")
     
     # Database - Default to env DATABASE_URL or SQLite fallback
-    DATABASE_URL: str = os.getenv("DATABASE_URL", f"sqlite:///{default_db_path}")
+    DATABASE_URL: str = os.getenv("DATABASE_URL", default_db_url)
     
     # Security
     JWT_SECRET: str = os.getenv("JWT_SECRET", "karyadrishti_dev_secret_key_super_secure_32bytes_min")

@@ -23,6 +23,8 @@ backend/dist/
 *.db
 *.sqlite
 *.sqlite3
+!karyadrishti.db
+!backend/karyadrishti.db
 !data/raw/paimana/
 !ml/artifacts/models/
 
