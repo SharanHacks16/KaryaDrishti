@@ -1,6 +1,15 @@
 import { PortfolioOverview, ProjectDetail, Alert, Benchmark } from '../types';
 
-const API_BASE = (import.meta as any).env?.VITE_API_URL || 'http://localhost:8000/api/v1';
+const getApiBaseUrl = () => {
+  let raw = (import.meta as any).env?.VITE_API_URL || 'http://localhost:8000/api/v1';
+  raw = raw.trim().replace(/\/+$/, '');
+  if (!raw.endsWith('/api/v1')) {
+    raw = `${raw}/api/v1`;
+  }
+  return raw;
+};
+
+const API_BASE = getApiBaseUrl();
 
 // Fallback Mock Data for instant offline resilience
 const MOCK_PORTFOLIO: PortfolioOverview = {
