@@ -9,10 +9,12 @@ def get_default_db_url() -> str:
     
     for candidate in [backend_db, root_db, cwd_db]:
         if os.path.exists(candidate) and os.path.getsize(candidate) > 100000:
-            return f"sqlite:///{candidate.replace('\\', '/')}"
+            clean_path = candidate.replace('\\', '/')
+            return f"sqlite:///{clean_path}"
     
     # Default fallback
-    return f"sqlite:///{backend_db.replace('\\', '/')}"
+    clean_fallback = backend_db.replace('\\', '/')
+    return f"sqlite:///{clean_fallback}"
 
 default_db_url = get_default_db_url()
 
