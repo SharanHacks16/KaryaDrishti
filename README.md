@@ -9,7 +9,7 @@ KARYADRISHTI is an institutional decision-support and early-warning portal desig
 ## Technical Architecture Overview
 
 ```
-PAIMANA Files → Raw Storage → Ingestion/Validation → PostgreSQL Data Model → Feature Engine → ML Engine (XGB/SHAP) → FastAPI Services → React Command Center
+PAIMANA Files → Raw Storage → Ingestion/Validation → PostgreSQL Data Model → Feature Engine → ML Engine  → FastAPI Services → React Command Center
 ```
 
 - **Frontend**: React 18, Vite, TypeScript, Tailwind CSS, Lucide Icons, Recharts, React Router v6, TanStack Query.
