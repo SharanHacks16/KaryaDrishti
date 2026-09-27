@@ -9,7 +9,7 @@ const getApiBaseUrl = () => {
   return raw;
 };
 
-const API_BASE = getApiBaseUrl();
+export const API_BASE = getApiBaseUrl();
 
 // Fallback Mock Data for instant offline resilience
 const MOCK_PORTFOLIO: PortfolioOverview = {
