@@ -2,6 +2,8 @@ import os
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from typing import List, Optional
 
+default_db_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '../../../karyadrishti.db')).replace('\\', '/')
+
 class Settings(BaseSettings):
     PROJECT_NAME: str = "KARYADRISHTI"
     VERSION: str = "2.0.0"
@@ -11,10 +13,7 @@ class Settings(BaseSettings):
     ENVIRONMENT: str = os.getenv("ENVIRONMENT", "development")
     
     # Database - Default to env DATABASE_URL or SQLite fallback
-    DATABASE_URL: str = os.getenv(
-        "DATABASE_URL", 
-        f"sqlite:///{os.path.abspath(os.path.join(os.path.dirname(__file__), '../../../karyadrishti.db')).replace('\\', '/')}"
-    )
+    DATABASE_URL: str = os.getenv("DATABASE_URL", f"sqlite:///{default_db_path}")
     
     # Security
     JWT_SECRET: str = os.getenv("JWT_SECRET", "karyadrishti_dev_secret_key_super_secure_32bytes_min")
