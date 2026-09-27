@@ -12,13 +12,18 @@ import shap
 def run_ml_inference_and_update_db():
     print("=== EXECUTING TRAINED XGBOOST + SHAP INFERENCE ON ALL 2,243 PROJECTS ===")
     
-    artifact_dir = 'ml/artifacts/models'
+    artifact_candidates = [
+        'ml/artifacts/models',
+        '../ml/artifacts/models',
+        os.path.join(os.path.dirname(__file__), '..', 'ml', 'artifacts', 'models')
+    ]
+    artifact_dir = next((a for a in artifact_candidates if os.path.exists(a)), 'ml/artifacts/models')
     cost_model_path = os.path.join(artifact_dir, 'cost_overrun_model.pkl')
     sched_model_path = os.path.join(artifact_dir, 'schedule_overrun_model.pkl')
     meta_path = os.path.join(artifact_dir, 'model_metadata.json')
 
     if not os.path.exists(cost_model_path) or not os.path.exists(sched_model_path):
-        print("Error: Trained model artifacts not found. Run 'python ml/src/models/train_model.py' first.")
+        print(f"Error: Trained model artifacts not found at {artifact_dir}. Run 'python ml/src/models/train_model.py' first.")
         return
 
     with open(cost_model_path, 'rb') as f:

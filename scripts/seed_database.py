@@ -71,9 +71,17 @@ def seed_real_data():
     db.commit()
 
     # 3. Read PAIMANA CSV
-    csv_path = 'data/raw/paimana/KARYADRISHTI_PAIMANA_Monthly_Project_Snapshots_Jul2025_Jul2026.csv'
-    if not os.path.exists(csv_path):
-        csv_path = os.path.expanduser('~/Downloads/KARYADRISHTI_PAIMANA_Monthly_Project_Snapshots_Jul2025_Jul2026.csv')
+    csv_filename = 'KARYADRISHTI_PAIMANA_Monthly_Project_Snapshots_Jul2025_Jul2026.csv'
+    csv_candidates = [
+        os.path.join('data', 'raw', 'paimana', csv_filename),
+        os.path.join('..', 'data', 'raw', 'paimana', csv_filename),
+        os.path.join(os.path.dirname(__file__), '..', 'data', 'raw', 'paimana', csv_filename),
+        os.path.expanduser(f'~/Downloads/{csv_filename}')
+    ]
+    csv_path = next((c for c in csv_candidates if os.path.exists(c)), None)
+    if not csv_path:
+        print(f"Error: Dataset CSV {csv_filename} not found in candidate locations.")
+        return
 
     df = pd.read_csv(csv_path)
 
